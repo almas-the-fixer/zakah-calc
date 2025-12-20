@@ -5,8 +5,11 @@ package types
 type MetalResponse struct {
 	Status string `json:"status"`
 	Data   struct {
-		BaseCurrency string             `json:"base_currency"`
-		Rates        map[string]float64 `json:"rates"` // Maps "XAU" -> 2350.50
+		BaseCurrency string `json:"base_currency"`
+		// The API returns "metal_prices", not "rates"
+		MetalPrices map[string]struct {
+			Price float64 `json:"price"` // We only care about the specific price field
+		} `json:"metal_prices"`
 	} `json:"data"`
 }
 
