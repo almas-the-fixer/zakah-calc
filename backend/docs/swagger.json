@@ -1,0 +1,102 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "A clean Zakah calculator API with currency conversion.",
+        "title": "Zakah Calculator API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/calculate-zakah": {
+            "post": {
+                "description": "Takes user assets and liabilities, converts currency, and calculates Zakah due.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Calculator"
+                ],
+                "summary": "Calculate Zakah",
+                "parameters": [
+                    {
+                        "description": "Calculation Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.CalculationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.CalculationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "types.CalculationRequest": {
+            "type": "object",
+            "properties": {
+                "business_assets": {
+                    "type": "number"
+                },
+                "cash": {
+                    "type": "number"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "gold_grams": {
+                    "type": "number"
+                },
+                "liabilities": {
+                    "type": "number"
+                },
+                "silver_grams": {
+                    "type": "number"
+                }
+            }
+        },
+        "types.CalculationResponse": {
+            "type": "object",
+            "properties": {
+                "currency": {
+                    "type": "string"
+                },
+                "local_currency": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "nisab_threshold": {
+                    "type": "number"
+                },
+                "total_assets": {
+                    "type": "number"
+                },
+                "zakah_payable": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}

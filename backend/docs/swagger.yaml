@@ -1,0 +1,68 @@
+basePath: /
+definitions:
+  types.CalculationRequest:
+    properties:
+      business_assets:
+        type: number
+      cash:
+        type: number
+      currency:
+        type: string
+      gold_grams:
+        type: number
+      liabilities:
+        type: number
+      silver_grams:
+        type: number
+    type: object
+  types.CalculationResponse:
+    properties:
+      currency:
+        type: string
+      local_currency:
+        type: string
+      message:
+        type: string
+      nisab_threshold:
+        type: number
+      total_assets:
+        type: number
+      zakah_payable:
+        type: number
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: A clean Zakah calculator API with currency conversion.
+  title: Zakah Calculator API
+  version: "1.0"
+paths:
+  /calculate-zakah:
+    post:
+      consumes:
+      - application/json
+      description: Takes user assets and liabilities, converts currency, and calculates
+        Zakah due.
+      parameters:
+      - description: Calculation Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/types.CalculationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.CalculationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Calculate Zakah
+      tags:
+      - Calculator
+swagger: "2.0"
