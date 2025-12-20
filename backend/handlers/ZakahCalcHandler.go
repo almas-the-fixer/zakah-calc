@@ -19,9 +19,10 @@ import (
 // 2. The Function
 func GetGoldSilverPrices() (float64, float64, error) {
 	// A. Setup Configuration
-	apiKey := os.Getenv("GOLD_API_SECRET")
+	apiKey := os.Getenv("APISED_SECRET_KEY")
+	postgres_user := os.Getenv("DB_USER")
 	baseURL := "https://gold.g.apised.com/v1/latest"
-
+	fmt.Println(postgres_user)
 	// B. Create the Client (The Mailman) - Good practice to set a timeout
 	client := &http.Client{
 		Timeout: 10 * time.Second,
@@ -64,14 +65,11 @@ func GetGoldSilverPrices() (float64, float64, error) {
 	}
 
 	// H. Extract Prices (XAU is Gold, XAG is Silver)
-	goldPrice := result.Data.Rates["XAU"]
-	silverPrice := result.Data.Rates["XAG"]
+	goldPrice := result.Data.MetalPrices["XAU"].Price
+	silverPrice := result.Data.MetalPrices["XAG"].Price
 
 	return goldPrice, silverPrice, nil
 }
-
-
-
 
 
 func GetExchangeRate(targetCurrency string) (float64, error) {
@@ -116,7 +114,17 @@ func GetExchangeRate(targetCurrency string) (float64, error) {
 // 2. Define the Output (What we send back)
 // See types.go response struct
 
-// 3. The Handler Function
+
+// CalculateZakah godoc
+// @Summary      Calculate Zakah
+// @Description  Takes user assets and liabilities, converts currency, and calculates Zakah due.
+// @Tags         Calculator
+// @Accept       json
+// @Produce      json
+// @Param        request body types.CalculationRequest true "Calculation Request"
+// @Success      200 {object} types.CalculationResponse
+// @Failure      400 {object} map[string]interface{}
+// @Router       /calculate-zakah [post]
 func CalculateZakah(c *fiber.Ctx) error {
 	// STEP 1: Parse Input
 	input := new(types.CalculationRequest)
