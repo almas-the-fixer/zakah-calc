@@ -13,6 +13,7 @@
 # --- Backend (Go) ---
 backend/vendor/
 backend/bin/
+backend/tmp/
 # Binaries (if you compile locally)
 backend/main
 backend/*.exe
