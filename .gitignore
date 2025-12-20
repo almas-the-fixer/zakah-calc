@@ -1,0 +1,32 @@
+# --- Global ---
+.DS_Store
+.vscode
+.idea
+
+# --- Security (CRITICAL) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Backend (Go) ---
+backend/vendor/
+backend/bin/
+# Binaries (if you compile locally)
+backend/main
+backend/*.exe
+backend/*.test
+# GORM/Sqlite temp files (if you ever use them)
+*.db
+*.sqlite
+
+# --- Frontend (React/Node) ---
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.npm
+frontend/*.log
+
+# --- Docker ---
+docker-compose.override.yml
