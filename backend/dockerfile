@@ -1,0 +1,32 @@
+# STAGE 1: Build the Binary
+FROM golang:1.25-alpine AS builder
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy dependency files first (for caching)
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the rest of the source code
+COPY . .
+
+# Build the app
+# -o main : output filename
+# ./cmd/main.go : input file path
+RUN go build -o main ./cmd/main.go
+
+# STAGE 2: The Final Tiny Image
+FROM alpine:latest
+
+WORKDIR /root/
+
+# Copy the compiled binary from the builder stage
+COPY --from=builder /app/main .
+COPY --from=builder /app/docs ./docs
+
+# Expose the port
+EXPOSE 8080
+
+# Run the binary
+CMD ["./main"]
