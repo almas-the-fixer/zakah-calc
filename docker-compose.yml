@@ -1,18 +1,63 @@
-version: '3.8'
 
 services:
-  db:
-    image: postgres:15-alpine
-    container_name: zakah_db
-    restart: always
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "${DB_PORT}:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+  # 1. The Database
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: zakah_db
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: ${DB_USER}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #     POSTGRES_DB: ${DB_NAME}
+  #   ports:
+  #     - "${DB_PORT}:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - zakah_network
 
-volumes:
-  postgres_data:
+  # 2. The Backend API
+  backend:
+    build: ./backend  # Tells Docker to build the Dockerfile in /backend
+    container_name: zakah_backend
+    restart: always
+    # depends_on:
+    #   - db
+    environment:
+      # DB_USER: ${DB_USER}
+      # DB_PASSWORD: ${DB_PASSWORD}
+      # DB_NAME: ${DB_NAME}
+      # DB_PORT: 5432
+      # # IMPORTANT: In Docker, the host is the Service Name ("db"), not localhost!
+      # DB_HOST: db 
+      APISED_SECRET_KEY: ${APISED_SECRET_KEY}
+    ports:
+      - "8080:8080"
+    networks:
+      - zakah_network
+
+  # 3. The Frontend UI
+  frontend:
+    build: ./frontend # Tells Docker to build the Dockerfile in /frontend
+    container_name: zakah_frontend
+    restart: always
+    ports:
+      - "5173:80" # Map localhost:5173 to container's port 80 (Nginx)
+    networks:
+      - zakah_network
+
+  # # 4. Database UI (Optional)
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - "8081:8080"
+  #   networks:
+  #     - zakah_network
+
+# volumes:
+#   postgres_data:
+
+networks:
+  zakah_network:
+    driver: bridge
