@@ -58,6 +58,24 @@ services:
 # volumes:
 #   postgres_data:
 
+# Jenkins Service...
+
+  jenkins:
+      image: jenkins/jenkins:lts-jdk17
+      container_name: zakah_jenkins
+      restart: always
+      user: root # ⚠️ Needed to allow Jenkins to access the Docker Socket
+      ports:
+        - "9090:8080" # Laptop Port 9090 -> Jenkins Port 8080
+        - "50000:50000"
+      volumes:
+        - jenkins_home:/var/jenkins_home
+        #  THE MAGIC: Allows Jenkins (inside docker) to run Docker commands (on your laptop)
+        - /var/run/docker.sock:/var/run/docker.sock
+
 networks:
   zakah_network:
     driver: bridge
+
+volumes:
+  jenkins_home: 
