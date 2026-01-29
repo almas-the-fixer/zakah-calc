@@ -61,7 +61,7 @@ services:
 # Jenkins Service...
 
   jenkins:
-      image: jenkins/jenkins:lts-jdk17
+      build: ./jenkins-docker 
       container_name: zakah_jenkins
       restart: always
       user: root # ⚠️ Needed to allow Jenkins to access the Docker Socket
