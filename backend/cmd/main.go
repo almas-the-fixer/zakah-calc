@@ -36,7 +36,7 @@ func main() {
 	})
 
 	// Main Endpoint For Calculating Zakah //
-	app.Post("/calculate-zakah", handlers.CalculateZakah)
+	app.Post("/calculate-zakah", handlers.ZakahHandler)
 
 	log.Fatal(app.Listen(":8080"))
 }
