@@ -33,6 +33,5 @@ type CalculationResponse struct {
 	NisabThreshold float64 `json:"nisab_threshold"`
 	ZakahPayable   float64 `json:"zakah_payable"`
 	Currency       string  `json:"currency"`
-	LocalCurrency  string `json:"local_currency"`
 	Message        string  `json:"message"`
 }
