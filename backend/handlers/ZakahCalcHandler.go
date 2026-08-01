@@ -49,6 +49,6 @@ func ZakahHandler(c *fiber.Ctx) error {
 	netWealth, nisabThreshold := zakah.ComputeNetWealth(*input, goldPriceUSD, silverPriceUSD, exchangeRate)
 
 	// Calculate Zakah
-	zakahDue := zakah.CalculateZakah(netWealth, nisabThreshold, targetCurrency)
-	return c.Status(200).JSON(zakahDue)
+	response := zakah.CalculateZakah(netWealth, nisabThreshold, targetCurrency)
+	return c.Status(200).JSON(response)
 }
